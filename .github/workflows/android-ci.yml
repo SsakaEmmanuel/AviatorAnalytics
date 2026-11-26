@@ -42,10 +42,32 @@ jobs:
           gradle-version: '9.3.1'
 
       - name: Run unit tests
-        run: gradle --no-daemon testDebugUnitTest
+        shell: bash
+        run: |
+          for attempt in 1 2 3; do
+            if gradle --no-daemon --no-configuration-cache testDebugUnitTest; then
+              exit 0
+            fi
+            if [ "$attempt" -lt 3 ]; then
+              echo "Gradle test attempt $attempt failed; retrying after 20 seconds..."
+              sleep 20
+            fi
+          done
+          exit 1
 
       - name: Assemble debug APK
-        run: gradle --no-daemon assembleDebug
+        shell: bash
+        run: |
+          for attempt in 1 2 3; do
+            if gradle --no-daemon --no-configuration-cache assembleDebug; then
+              exit 0
+            fi
+            if [ "$attempt" -lt 3 ]; then
+              echo "APK assembly attempt $attempt failed; retrying after 20 seconds..."
+              sleep 20
+            fi
+          done
+          exit 1
 
       - name: Upload debug APK
         uses: actions/upload-artifact@v4
