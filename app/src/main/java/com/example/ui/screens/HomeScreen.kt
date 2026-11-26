@@ -449,8 +449,8 @@ fun HomeScreen(
     // BOT CREDENTIALS CONFIGURATION DIALOG
     // =========================================================================
     if (showBotCredentialsDialog) {
-        var phoneInput by remember { mutableStateOf(savedPhone.ifBlank { AccountVaultManager.DEFAULT_BOT_PHONE }) }
-        var passwordInput by remember { mutableStateOf(savedPassword.ifBlank { AccountVaultManager.DEFAULT_BOT_PASS }) }
+        var phoneInput by remember { mutableStateOf(savedPhone.ifBlank { "" }) }
+        var passwordInput by remember { mutableStateOf(savedPassword.ifBlank { "" }) }
         var passwordVisible by remember { mutableStateOf(false) }
         var autoFillSwitch by remember { mutableStateOf(autoFillOnLoad) }
         var autoSubmitSwitch by remember { mutableStateOf(autoSubmitOnFill) }

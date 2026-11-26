@@ -883,10 +883,8 @@ fun BrowserScreen(
 
     fun triggerBotAutoLogin() {
         if (savedPhone.isBlank() || savedPassword.isBlank()) {
-            Toast.makeText(context, "Configuring default credentials (0780531600)...", Toast.LENGTH_SHORT).show()
-            savedPhone = AccountVaultManager.DEFAULT_BOT_PHONE
-            savedPassword = AccountVaultManager.DEFAULT_BOT_PASS
-            vaultManager.saveCredentials(savedPhone, savedPassword, true, true)
+            Toast.makeText(context, "Enter and save your own login details in Bot Config first", Toast.LENGTH_SHORT).show()
+            return
         }
 
         injectBetikaAutoFill(
@@ -1563,8 +1561,8 @@ fun BrowserScreen(
 
                     // Bot Auto-Fill triggered on page load if bot is active
                     if (isBotActive) {
-                        val phone = if (savedPhone.isNotBlank()) savedPhone else AccountVaultManager.DEFAULT_BOT_PHONE
-                        val pass = if (savedPassword.isNotBlank()) savedPassword else AccountVaultManager.DEFAULT_BOT_PASS
+                        val phone = if (savedPhone.isNotBlank()) savedPhone else ""
+                        val pass = if (savedPassword.isNotBlank()) savedPassword else ""
                         injectBetikaAutoFill(
                             webView = wv,
                             phone = phone,
@@ -1730,8 +1728,8 @@ fun BrowserScreen(
     }
 
     if (showVaultDialog) {
-        var phoneInput by remember { mutableStateOf(savedPhone.ifBlank { AccountVaultManager.DEFAULT_BOT_PHONE }) }
-        var passwordInput by remember { mutableStateOf(savedPassword.ifBlank { AccountVaultManager.DEFAULT_BOT_PASS }) }
+        var phoneInput by remember { mutableStateOf(savedPhone.ifBlank { "" }) }
+        var passwordInput by remember { mutableStateOf(savedPassword.ifBlank { "" }) }
         var passwordVisible by remember { mutableStateOf(false) }
         var autoFillSwitch by remember { mutableStateOf(autoFillOnLoad) }
         var autoSubmitSwitch by remember { mutableStateOf(autoSubmitOnFill) }
@@ -1873,12 +1871,12 @@ fun BrowserScreen(
                 TextButton(
                     onClick = {
                         vaultManager.clearCredentials()
-                        savedPhone = AccountVaultManager.DEFAULT_BOT_PHONE
-                        savedPassword = AccountVaultManager.DEFAULT_BOT_PASS
-                        phoneInput = AccountVaultManager.DEFAULT_BOT_PHONE
-                        passwordInput = AccountVaultManager.DEFAULT_BOT_PASS
+                        savedPhone = ""
+                        savedPassword = ""
+                        phoneInput = ""
+                        passwordInput = ""
                         showVaultDialog = false
-                        Toast.makeText(context, "Reset to default credentials", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, "Saved login details cleared", Toast.LENGTH_SHORT).show()
                     }
                 ) {
                     Text("Reset Default", color = AmberMedium)
