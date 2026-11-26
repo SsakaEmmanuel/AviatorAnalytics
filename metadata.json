@@ -1,0 +1,7 @@
+{
+  "name": "Aviator Analytics",
+  "description": "Statistical analytics and multiplier range estimation for Aviator game results",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
+
